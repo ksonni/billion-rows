@@ -15,27 +15,29 @@ public class PartitionedFile {
         this.partitionSize = partitionSize;
     }
 
-    record Partition(long start, int length) {
+    record Partition(int id, long start, int length) {
     }
 
-    List<Partition> buildPartitions() throws IOException {
+    synchronized List<Partition> buildPartitions() throws IOException {
         final var size = file.length();
         List<Partition> partitionList = new ArrayList<>();
 
         try (var reader = new RandomAccessFile(file, "r")) {
+            int id = 0;
             while (reader.getFilePointer() < size) {
+                id++;
                 final var position = reader.getFilePointer();
                 var nextPosition = Math.min(position + partitionSize, size - 1);
                 reader.seek(nextPosition);
                 reader.readLine();
                 final var length = (int) (reader.getFilePointer() - position);
-                partitionList.add(new Partition(position, length));
+                partitionList.add(new Partition(id, position, length));
             }
         }
         return partitionList;
     }
 
-    String read(Partition partition) throws IOException {
+    synchronized String read(Partition partition) throws IOException {
         try (var reader = new RandomAccessFile(file, "r")) {
             var out = new byte[partition.length];
             reader.seek(partition.start);
