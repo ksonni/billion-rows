@@ -15,8 +15,7 @@ public class PartitionedFile {
         this.partitionSize = partitionSize;
     }
 
-    record Partition(int id, long start, int length) {
-    }
+    record Partition(int id, long start, int length) {}
 
     synchronized List<Partition> buildPartitions() throws IOException {
         final var size = file.length();

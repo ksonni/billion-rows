@@ -1,15 +1,21 @@
 package com.ksonni.obrc.main;
 
-import com.ksonni.obrc.concurrent.ConcurrentSummaryBuilder;
 import com.ksonni.obrc.models.SummaryBuilder;
+import com.ksonni.obrc.concurrent.ThreadPoolSummaryBuilder;
 
 import java.io.IOException;
 
 public class Main {
     public static void main(String[] args) {
         final var startTime = System.currentTimeMillis();
-        final var path = System.getProperty("user.home") + "/Documents/software/go/1brc/data/measurements.txt";
-        SummaryBuilder builder = new ConcurrentSummaryBuilder();
+
+        if (args.length < 1) {
+            System.out.println("Must specify file path as an argument");
+            System.exit(1);
+        }
+
+        final var path = args[0];
+        SummaryBuilder builder = new ThreadPoolSummaryBuilder();
         try {
             System.out.println(builder.buildSummary(path));
         } catch (IOException e) {

@@ -13,7 +13,7 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
-public class ConcurrentSummaryBuilder implements SummaryBuilder {
+public class ThreadPoolSummaryBuilder implements SummaryBuilder {
     private static final int PARTITION_SIZE = 32 * 1024 * 1024;
 
     @Override
