@@ -36,7 +36,7 @@ public class PartitionedFile {
     public synchronized List<Partition> buildPartitions() throws IOException {
         final var size = file.length();
 
-        System.out.printf("Partitioning file of size: %d\n", size);
+        System.out.printf("Partitioning file of size: %s\n", FileUtils.byteCountToDisplaySize(size));
         System.out.printf("Target size per partition: %s\n", FileUtils.byteCountToDisplaySize(partitionSize));
 
         List<Partition> partitionList = new ArrayList<>();
