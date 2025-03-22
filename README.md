@@ -11,13 +11,13 @@ to solve the problem without delving into low-level optimisations/unsafe to keep
 - Fork/Join framework
 
 ## Problem 
-A text file with 1 billion rows consisting of weather data in the following format is provided:
+A text file with 1 billion rows of weather data in the following format is provided:
 <pre>
 Bathgate;-26.8
 Kerman;44.1
 Gorontalo;-79.1
 </pre>
-Following info needs to be computed:
+Following info needs to be calculated:
 - City with the lowest reading
 - City with the highest reading
 - Mean temperature reading across all stations
