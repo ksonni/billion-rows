@@ -9,21 +9,20 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
-import java.util.concurrent.Executors;
+import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
 
-public class ThreadPoolSummaryBuilder implements SummaryBuilder {
+abstract class ThreadPoolSummaryBuilder implements SummaryBuilder {
+    abstract ExecutorService getExecutorService();
+
     @Override
     public Summary buildSummary(String filePath) throws IOException, ParsingException {
         final var file = new PartitionedFile(filePath);
-        final var maxThreads = Math.max(1, Runtime.getRuntime().availableProcessors()-1);
-
-        System.out.printf("Using thread count: %d\n", maxThreads);
 
         List<PartitionedFile.Partition> partitions = file.buildPartitions();
         List<Future<Summary>> futures = new ArrayList<>();
 
-        try(var executor = Executors.newFixedThreadPool(maxThreads)) {
+        try(var executor = getExecutorService()) {
             for (var partition : partitions) {
                 var future = executor.submit(() -> {
                     String data = file.read(partition);

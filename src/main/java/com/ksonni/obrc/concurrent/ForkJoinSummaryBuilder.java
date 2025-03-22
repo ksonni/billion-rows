@@ -9,7 +9,7 @@ import java.io.IOException;
 import java.util.concurrent.ForkJoinTask;
 import java.util.concurrent.RecursiveTask;
 
-public class ForkJoinSummaryBuilder implements SummaryBuilder {
+public final class ForkJoinSummaryBuilder implements SummaryBuilder {
     @Override
     public Summary buildSummary(String filePath) throws IOException, ParsingException {
         final var file = new PartitionedFile(filePath);
