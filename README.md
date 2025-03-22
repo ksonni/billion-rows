@@ -22,6 +22,21 @@ Following info needs to be calculated:
 - City with the highest reading
 - Mean temperature reading across all stations
 
+## Results
+On a controlled 8-core M1 mac with just the terminal running, following average times 
+were observed for different implementations across multiple runs:
+
+### OpenJDK 24
+
+| Class                         | Strategy                         | Time Taken |
+|:------------------------------|:---------------------------------|-----------:|
+| SerialSummaryBuilder          | Single threaded line by line     |     166.3s |
+| PlatformThreadsSummaryBuilder | Dedicated thread pool            |      32.4s |
+| VirtualThreadsSummaryBuilder  | Java 21 virtual threads          |      30.8s |
+| ForkJoinSummaryBuilder        | Using ForkJoin API RecursiveTask |      30.6s |
+
+Perhaps more efficiencies can be found by using float-parsing tricks/unsafe APIs etc., but these were  avoided for simplicity.
+
 ## Algorithm 
 Processing the file line by line and computing the mean doesn't fully use the multicore capabilities of the hardware. It can be solved concurrently as follows:
 
@@ -46,12 +61,8 @@ Processing the file line by line and computing the mean doesn't fully use the mu
 ### Merging
 - Finally, all the totals are merged and the mean is calculated for the file as whole
 
-## Results
-On an 8-core M1 mac, serial execution takes around 2-3 minutes, but the concurrent approach
-brings it down to around 40 seconds.
-Perhaps more efficiencies can be found by using float-parsing tricks/unsafe APIs etc., but these were  avoided for simplicity.
-
 ## Testing
+- Tests to verify results of the concurrent algorithm against the simple serial one exist
 - Tests on a smaller 100,000 line file can be run with `./gradlew test` (Needs JDK 21+)
-- The script provided by the [original project](https://github.com/gunnarmorling/1brc/blob/main/src/main/python/create_measurements.py) can be used to generate a billion row file if needed
+- The script provided by the [original project](https://github.com/gunnarmorling/1brc/blob/main/src/main/python/create_measurements.py) can be used to generate a billion row file for performance runs
 
