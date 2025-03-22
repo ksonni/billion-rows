@@ -13,6 +13,10 @@ public final class ForkJoinSummaryBuilder implements SummaryBuilder {
     @Override
     public Summary buildSummary(String filePath) throws IOException, ParsingException {
         final var file = new PartitionedFile(filePath);
+        return buildSummary(file);
+    }
+
+    Summary buildSummary(PartitionedFile file) throws IOException, ParsingException {
         final var partitions = file.buildPartitions();
         final var tasks = partitions.stream().map(p -> new SummaryTask(file, p)).toList();
 

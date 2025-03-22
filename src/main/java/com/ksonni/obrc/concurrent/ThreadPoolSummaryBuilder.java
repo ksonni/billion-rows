@@ -18,7 +18,10 @@ abstract class ThreadPoolSummaryBuilder implements SummaryBuilder {
     @Override
     public Summary buildSummary(String filePath) throws IOException, ParsingException {
         final var file = new PartitionedFile(filePath);
+        return buildSummary(file);
+    }
 
+    Summary buildSummary(PartitionedFile file) throws IOException, ParsingException {
         List<PartitionedFile.Partition> partitions = file.buildPartitions();
         List<Future<Summary>> futures = new ArrayList<>();
 
