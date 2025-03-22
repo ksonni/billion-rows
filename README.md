@@ -36,6 +36,7 @@ were observed for different implementations across multiple runs:
 | ForkJoinSummaryBuilder        | Using ForkJoin API RecursiveTask |      30.6s |
 
 Perhaps more efficiencies can be found by using float-parsing tricks/unsafe APIs etc., but these were  avoided for simplicity.
+An attempt was made to use Graal CE 24, but OpenJDK implementation was found to be better for this workload.
 
 ## Algorithm 
 Processing the file line by line and computing the mean doesn't fully use the multicore capabilities of the hardware. It can be solved concurrently as follows:
@@ -63,6 +64,6 @@ Processing the file line by line and computing the mean doesn't fully use the mu
 
 ## Testing
 - Tests to verify results of the concurrent algorithm against the simple serial one exist
-- Tests on a smaller 100,000 line file can be run with `./gradlew test` (Needs JDK 21+)
+- Tests on a smaller 100,000 line file can be run with `./gradlew test` (JDK 24+)
 - The script provided by the [original project](https://github.com/gunnarmorling/1brc/blob/main/src/main/python/create_measurements.py) can be used to generate a billion row file for performance runs
 

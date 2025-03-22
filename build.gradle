@@ -1,6 +1,7 @@
 plugins {
     id 'java'
     id 'application'
+    id 'org.graalvm.buildtools.native' version '0.10.6'
 }
 
 group = 'com.ksonni'
@@ -12,6 +13,11 @@ repositories {
 
 application {
     mainClass = 'com.ksonni.obrc.main.Main'
+}
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_24
+    targetCompatibility = JavaVersion.VERSION_24
 }
 
 jar {
