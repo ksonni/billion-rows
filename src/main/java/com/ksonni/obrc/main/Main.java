@@ -1,7 +1,8 @@
 package com.ksonni.obrc.main;
 
-import com.ksonni.obrc.models.SummaryBuilder;
+import com.ksonni.obrc.concurrent.ForkJoinSummaryBuilder;
 import com.ksonni.obrc.concurrent.ThreadPoolSummaryBuilder;
+import com.ksonni.obrc.models.SummaryBuilder;
 
 import java.io.IOException;
 
@@ -15,7 +16,7 @@ public class Main {
         }
 
         final var path = args[0];
-        SummaryBuilder builder = new ThreadPoolSummaryBuilder();
+        SummaryBuilder builder = new ForkJoinSummaryBuilder();
         try {
             System.out.println(builder.buildSummary(path));
         } catch (IOException e) {

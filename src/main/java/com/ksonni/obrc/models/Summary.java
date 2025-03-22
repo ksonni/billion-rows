@@ -1,13 +1,32 @@
 package com.ksonni.obrc.models;
 
-public record Summary(City minCity, City maxCity, int entries, double total) {
+import java.util.Optional;
+
+public record Summary(Optional<City> minCity, Optional<City> maxCity, int entries, double total) {
     public Summary merge(Summary other) {
-        return new Summary(
-                this.minCity.temperature() < other.minCity.temperature() ? this.minCity : other.minCity,
-                this.maxCity.temperature() < other.maxCity.temperature() ? this.maxCity : other.maxCity,
-                this.entries + other.entries,
-                this.total + other.total
-        );
+        Optional<City> min = Optional.empty();
+        if (minCity.isPresent() && other.minCity.isPresent()) {
+            min = minCity.get().temperature() < other.minCity.get().temperature() ? minCity : other.minCity;
+        } else if(minCity.isPresent()) {
+            min = minCity;
+        } else if (other.minCity.isPresent()) {
+            min = other.minCity;
+        }
+
+        Optional<City> max = Optional.empty();
+        if (maxCity.isPresent() && other.maxCity.isPresent()) {
+            max = maxCity.get().temperature() > other.maxCity.get().temperature() ? maxCity : other.maxCity;
+        } else if(maxCity.isPresent()) {
+            max = maxCity;
+        } else if (other.maxCity.isPresent()) {
+            max = other.maxCity;
+        }
+
+        return new Summary(min, max, this.entries + other.entries, this.total + other.total);
+    }
+
+    public static Summary empty() {
+        return new Summary(Optional.empty(), Optional.empty(), 0, 0);
     }
 
     public double mean() {

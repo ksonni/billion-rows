@@ -8,6 +8,7 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.StringReader;
+import java.util.Optional;
 
 public class SerialSummaryBuilder implements SummaryBuilder {
     @Override
@@ -43,7 +44,9 @@ public class SerialSummaryBuilder implements SummaryBuilder {
                 maxCity = city;
             }
         }
-        return new Summary(new City(min, minCity), new City(max, maxCity), count, total);
+        Optional<City> minCityOptional = minCity.isEmpty() ? Optional.empty() : Optional.of(new City(min, minCity));
+        Optional<City> maxCityOptional = maxCity.isEmpty() ? Optional.empty() : Optional.of(new City(max, maxCity));
+        return new Summary(minCityOptional, maxCityOptional, count, total);
     }
 
     public Summary buildContentsSummary(String contents) throws IOException, ParsingException {
